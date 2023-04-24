@@ -1,6 +1,6 @@
 .container {
   padding: 1rem;
-  max-width: 43.75rem;
+  max-width: 50rem;
   margin: 0 auto;
 }
 
@@ -11,4 +11,12 @@
 }
 .input {
   width: 100%;
+}
+
+.grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  /* grid-template-rows: repeat(auto, 1fr); */
+  gap: 1rem;
 }
