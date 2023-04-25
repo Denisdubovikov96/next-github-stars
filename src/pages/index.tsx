@@ -2,62 +2,16 @@ import Head from 'next/head'
 // import Image from 'next/image'
 import { Inter } from 'next/font/google'
 // import { useSession, signIn, signOut } from 'next-auth/react'
-
-// import { repos, users } from '#components/graphql/assets'
-// import RepoCard, { Repo } from '#components/UI/RepoCard'
-// import UserCard, { User } from '#components/UI/Card'
-import styles from '#components/styles/Home.module.css'
-// import { useApolloClient, useMutation, useQuery } from '@apollo/client'
-// import { ADD_STAR, GET_REPOS_BY_SEARCH, GET_USERS_BY_SEARCH, REMOVE_STAR } from '#components/graphql'
-import UserCard, { User } from '#components/components/UserCard'
-import { useGitStars } from '#components/hooks/useGitStars'
-import { useGitSearch } from '#components/hooks/useGitSearch'
-import RepoCard from '#components/components/RepoCard'
 import SearchBar from '#components/components/Search'
-import ReposList from '#components/components/ReposList'
+import UsersList from '#components/components/UsersList'
+import RepoList from '#components/components/RepoList'
+
+import styles from '#components/styles/Home.module.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 export default function Home() {
-  const { repos, users, reposSearchRefetch, userSearchRefetch } = useGitSearch()
-  const { addStar, removeStar, loading: starsLoading } = useGitStars()
-  // const 
-
-  // const [] = React.useState('')
-
-  // console.log({ users, repos });
-  // console.log(session);
-
-  const onSearch = (search: string) => {
-    userSearchRefetch({ search })
-    reposSearchRefetch({ search })
-  }
-
-  const handlerStarClick = async (id: string, isStared: boolean) => {
-    if (!isStared) {
-      addStar({ variables: { id } })
-    } else {
-      const data = await removeStar({ variables: { id } })
-
-      if (data.extensions?.warnings?.[0]?.data) {
-        removeStar({ variables: { id: data.extensions?.warnings?.[0]?.data?.next_global_id } })
-      }
-    }
-
-    reposSearchRefetch()
-  }
-
-
-  // if (session) {
-  //   return (
-  //     <main className={`${styles.main} ${inter.className}`}>
-  //       Not signed in <br />
-  //       <button onClick={() => signOut()}>Sign in</button>
-  //     </main>
-  //   )
-  // }
-
   return (
     <>
       <Head>
@@ -69,38 +23,19 @@ export default function Home() {
       <main className={inter.className}>
         <div className={styles.container}>
 
-          <SearchBar onSearch={onSearch} />
+          <SearchBar />
 
-          <section>
+          <section className={styles.section}>
             <h2>Users</h2>
             <div className={styles.grid}>
-              {/* < */}
-              {users?.search.edges.map(({ node }) => {
-                return (
-                  <UserCard
-                    key={node.id}
-                    // @ts-ignore
-                    user={node}
-                  />
-                )
-              })}
+              <UsersList />
             </div>
           </section>
-          <section>
+
+          <section className={styles.section}>
             <h2>Repositories</h2>
             <div className={styles.grid}>
-              {repos?.search.edges.map(({ node }, i) => {
-                return (
-                  <RepoCard
-                    key={node.id}
-                    // @ts-ignore
-                    repo={node}
-                    // @ts-ignore
-                    onStarClick={() => handlerStarClick(node.id, node.viewerHasStarred)}
-                    isLoading={starsLoading}
-                  />
-                )
-              })}
+              <RepoList />
             </div>
           </section>
 

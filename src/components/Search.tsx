@@ -1,17 +1,18 @@
 import React from 'react'
-import { useGitSearch } from '#components/hooks/useGitSearch'
-
 import styles from '#components/styles/Home.module.css'
+import { useRouter } from 'next/router'
 
 
-const SearchBar: React.FC<{ onSearch: (search: string) => void }> = ({ onSearch }) => {
+const SearchBar = () => {
+    const { query, push } = useRouter()
+
     return (
         <form action="" onSubmit={(e) => {
             e.preventDefault()
-            onSearch(e.currentTarget.search.value)
+            push(`/?search=${e.currentTarget.search.value}`, undefined)
         }}>
             <div className={styles.searchBar}>
-                <input defaultValue={''} className={styles.input} type="text" name='search' />
+                <input defaultValue={query.search || ""} className={styles.input} type="text" name='search' />
                 <button type='submit' className={styles.btn} >
                     search
                 </button>

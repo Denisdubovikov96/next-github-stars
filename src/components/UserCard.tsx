@@ -1,17 +1,8 @@
 import React from 'react'
 import Image from 'next/image'
-import styles from '#components/styles/UserCard.module.css'
 import Card from '#components/UI/Card'
-
-export type User = {
-    id: string,
-    email: string,
-    avatarUrl: string,
-    bio: string,
-    name: string,
-    url: string,
-    projectsUrl: string
-}
+import styles from '#components/styles/Card.module.css'
+import { User } from '#components/types/common'
 
 type UserCardProps = {
     user: User
@@ -24,7 +15,6 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
                 <div className={styles.header}>
                     <div className={styles.media}>
                         {user.avatarUrl && (<Image width={100} height={100} src={user.avatarUrl} className={styles.avatar} alt='avatar' />)}
-
 
                         <a href={user.projectsUrl} target="_blank" rel="noopener noreferrer">
                             Projects
@@ -47,9 +37,6 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
                 <div className={styles.bio}>
                     {user.bio}
                 </div>
-                {/* <div className={styles.footer}>
-  
-        </div> */}
             </div>
         </Card>
     )

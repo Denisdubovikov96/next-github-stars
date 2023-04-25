@@ -1,5 +1,8 @@
 import { gql } from '@apollo/client';
 
+export type QueryResponse<T> = { search: { edges: { node: T }[] } }
+
+
 export const GET_REPOS_BY_SEARCH = gql`
     query searchRepos($search: String!) {
         search(query: $search, type: REPOSITORY, first: 20) {
