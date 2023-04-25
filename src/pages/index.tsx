@@ -1,28 +1,62 @@
 import Head from 'next/head'
 // import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import { useSession, signIn, signOut } from 'next-auth/react'
+// import { useSession, signIn, signOut } from 'next-auth/react'
 
+// import { repos, users } from '#components/graphql/assets'
+// import RepoCard, { Repo } from '#components/UI/RepoCard'
+// import UserCard, { User } from '#components/UI/Card'
 import styles from '#components/styles/Home.module.css'
-import { repos, users } from '#components/graphql/assets'
-import RepoCard from '#components/UI/RepoCard'
-import UserCard from '#components/UI/UserCard'
+// import { useApolloClient, useMutation, useQuery } from '@apollo/client'
+// import { ADD_STAR, GET_REPOS_BY_SEARCH, GET_USERS_BY_SEARCH, REMOVE_STAR } from '#components/graphql'
+import UserCard, { User } from '#components/components/UserCard'
+import { useGitStars } from '#components/hooks/useGitStars'
+import { useGitSearch } from '#components/hooks/useGitSearch'
+import RepoCard from '#components/components/RepoCard'
+import SearchBar from '#components/components/Search'
+import ReposList from '#components/components/ReposList'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
 
-  const { data: session } = useSession()
+export default function Home() {
+  const { repos, users, reposSearchRefetch, userSearchRefetch } = useGitSearch()
+  const { addStar, removeStar, loading: starsLoading } = useGitStars()
+  // const 
+
+  // const [] = React.useState('')
+
+  // console.log({ users, repos });
   // console.log(session);
 
-  if (!session) {
-    return (
-      <main className={`${styles.main} ${inter.className}`}>
-        Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
-      </main>
-    )
+  const onSearch = (search: string) => {
+    userSearchRefetch({ search })
+    reposSearchRefetch({ search })
   }
+
+  const handlerStarClick = async (id: string, isStared: boolean) => {
+    if (!isStared) {
+      addStar({ variables: { id } })
+    } else {
+      const data = await removeStar({ variables: { id } })
+
+      if (data.extensions?.warnings?.[0]?.data) {
+        removeStar({ variables: { id: data.extensions?.warnings?.[0]?.data?.next_global_id } })
+      }
+    }
+
+    reposSearchRefetch()
+  }
+
+
+  // if (session) {
+  //   return (
+  //     <main className={`${styles.main} ${inter.className}`}>
+  //       Not signed in <br />
+  //       <button onClick={() => signOut()}>Sign in</button>
+  //     </main>
+  //   )
+  // }
 
   return (
     <>
@@ -34,29 +68,42 @@ export default function Home() {
       </Head>
       <main className={inter.className}>
         <div className={styles.container}>
-          <div className={styles.searchBar}>
-            <input defaultValue={session.user?.name || ''} className={styles.input} type="text" />
-            <button>
-              search
-            </button>
-          </div>
 
-          {/* <div className={styles.grid}>
-            {repos.map(({node})=>{
-              return(
-                // @ts-ignore
-                <RepoCard key={node.id} repo={node}/>
-              )
-            })}
-          </div> */}
-          <div className={styles.grid}>
-            {users.map(({node})=>{
-              return(
-                // @ts-ignore
-                <UserCard key={node.id} user={node}/>
-              )
-            })}
-          </div>
+          <SearchBar onSearch={onSearch} />
+
+          <section>
+            <h2>Users</h2>
+            <div className={styles.grid}>
+              {/* < */}
+              {users?.search.edges.map(({ node }) => {
+                return (
+                  <UserCard
+                    key={node.id}
+                    // @ts-ignore
+                    user={node}
+                  />
+                )
+              })}
+            </div>
+          </section>
+          <section>
+            <h2>Repositories</h2>
+            <div className={styles.grid}>
+              {repos?.search.edges.map(({ node }, i) => {
+                return (
+                  <RepoCard
+                    key={node.id}
+                    // @ts-ignore
+                    repo={node}
+                    // @ts-ignore
+                    onStarClick={() => handlerStarClick(node.id, node.viewerHasStarred)}
+                    isLoading={starsLoading}
+                  />
+                )
+              })}
+            </div>
+          </section>
+
         </div>
       </main>
     </>

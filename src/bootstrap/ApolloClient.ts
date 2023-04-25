@@ -6,10 +6,14 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
+    
+    // console.log('here',process.env.NEXT_PUBLIC_GITHUB_SECRET);
+    
     return {
         headers: {
             ...headers,
-            authorization: `Bearer ${process.env.REACT_APP_GITHUB_KEY}`
+            authorization: `Bearer ${process.env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN}`
+            // authorization: `Bearer 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`
         }
     }
 });
