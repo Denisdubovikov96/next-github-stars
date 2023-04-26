@@ -1,17 +1,32 @@
 import Head from 'next/head'
-// import Image from 'next/image'
 import { Inter } from 'next/font/google'
-// import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession, signIn, signOut } from 'next-auth/react'
 import SearchBar from '#components/components/Search'
 import UsersList from '#components/components/UsersList'
 import RepoList from '#components/components/RepoList'
 
 import styles from '#components/styles/Home.module.css'
+import React from 'react'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
 
 export default function Home() {
+  const session = useSession()
+  const { push } = useRouter()
+
+  React.useEffect(() => {
+    if (session.status === "unauthenticated") {
+      signIn()
+    }
+
+    if (session.data?.user?.name) {
+      push(`/?search=${session.data?.user?.name}`, undefined)
+    }
+  }, [])
+
+
   return (
     <>
       <Head>

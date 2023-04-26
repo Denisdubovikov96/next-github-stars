@@ -1,11 +1,11 @@
 
 import { useQuery } from '@apollo/client'
 import React from 'react'
-import UserCard, { User } from './UserCard'
-import { GET_REPOS_BY_SEARCH, GET_USERS_BY_SEARCH, QueryResponse } from '#components/graphql'
-import RepoCard, { Repo } from './RepoCard'
+import { GET_REPOS_BY_SEARCH, QueryResponse } from '#components/graphql'
+import RepoCard from './RepoCard'
 import { useGitStars } from '#components/hooks/useGitStars'
 import { useRouter } from 'next/router'
+import { Repo } from '#components/types/common'
 
 const RepoList = () => {
     const { query } = useRouter()
@@ -26,9 +26,18 @@ const RepoList = () => {
 
     return (
         <>
-            {repos?.search.edges.map(({ node }) => {
-                return <RepoCard key={node.id} repo={node} onStarClick={() => handlerStarClick(node.id, node.viewerHasStarred)} isLoading={loading} />
-            })}
+            {
+                !!repos?.search.edges.length ?
+                    repos?.search.edges.map(({ node }) => {
+                        return <RepoCard
+                            key={node.id}
+                            repo={node}
+                            onStarClick={() => handlerStarClick(node.id, node.viewerHasStarred)}
+                            isLoading={loading}
+                        />
+                    }) :
+                    (<div>not found</div>)
+            }
         </>
     )
 }

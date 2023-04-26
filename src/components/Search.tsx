@@ -1,7 +1,6 @@
 import React from 'react'
-import styles from '#components/styles/Home.module.css'
 import { useRouter } from 'next/router'
-
+import styles from '#components/styles/Search.module.css'
 
 const SearchBar = () => {
     const { query, push } = useRouter()

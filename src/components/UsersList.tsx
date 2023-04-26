@@ -16,9 +16,11 @@ const UsersList = () => {
 
     return (
         <>
-            {users?.search.edges.map(({ node }) => {
-                return <UserCard key={node.name} user={node} />
-            })}
+            {
+            users?.search.edges.map(({ node }) => {
+                return <UserCard key={`${node.name}-${node.id}`} user={node} />
+            }) || 'not found'
+            }
         </>
     )
 }

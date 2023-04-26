@@ -1,0 +1,20 @@
+.searchBar {
+    display: flex;
+    width: 100%;
+}
+
+.searchBar .input {
+    padding: 0.5rem 0.5rem;
+    width: 100%;
+    border-radius: .25rem 0 0 .25rem;
+    border: 0;
+    outline: 0;
+}
+
+
+.searchBar .btn {
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 0 .25rem .25rem 0;
+}

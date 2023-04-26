@@ -11,21 +11,20 @@ type UserCardProps = {
 const UserCard: React.FC<UserCardProps> = ({ user }) => {
     return (
         <Card>
-            <div className={styles.root}>
+            {/* <div className={styles.root}> */}
                 <div className={styles.header}>
                     <div className={styles.media}>
                         {user.avatarUrl && (<Image width={100} height={100} src={user.avatarUrl} className={styles.avatar} alt='avatar' />)}
-
-                        <a href={user.projectsUrl} target="_blank" rel="noopener noreferrer">
-                            Projects
-                        </a>
                     </div>
-                    <div>
+                    <div className={styles.userInfo}>
                         <h6 className={styles.title}>
                             <a href={user.avatarUrl} target="_blank" rel="noopener noreferrer">
                                 {user.name}
                             </a>
                         </h6>
+                        <a href={user.projectsUrl} target="_blank" rel="noopener noreferrer">
+                            Projects
+                        </a>
                         {user.email && (
                             <a href="mailto:">
                                 {user.email}
@@ -37,7 +36,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
                 <div className={styles.bio}>
                     {user.bio}
                 </div>
-            </div>
+            {/* </div> */}
         </Card>
     )
 }
