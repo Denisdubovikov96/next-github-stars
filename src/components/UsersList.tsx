@@ -22,7 +22,7 @@ const UsersList = () => {
                 {
                     users?.search.edges.map(({ node }) => {
                         return (
-                            <Grid.Col key={node.id} md={6} lg={3}>
+                            <Grid.Col key={node.id} md={6} >
                                 <UserCard key={`${node.name}-${node.id}`} user={node} />
                             </Grid.Col>
                         )

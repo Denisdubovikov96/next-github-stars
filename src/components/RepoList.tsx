@@ -29,7 +29,7 @@ const RepoList = () => {
                 {
                     repos?.search.edges.map(({ node }) => {
                         return (
-                            <Grid.Col key={node.id} md={6} lg={3}>
+                            <Grid.Col key={node.id} md={6} >
                                 <RepoCard
                                     repo={node}
                                     onStarClick={() => handlerStarClick(node.id, node.viewerHasStarred)}
