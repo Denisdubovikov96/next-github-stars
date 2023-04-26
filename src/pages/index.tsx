@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession, signIn } from 'next-auth/react'
 import SearchBar from '#components/components/Search'
 import UsersList from '#components/components/UsersList'
 import RepoList from '#components/components/RepoList'
@@ -8,7 +8,6 @@ import RepoList from '#components/components/RepoList'
 import styles from '#components/styles/Home.module.css'
 import React from 'react'
 import { useRouter } from 'next/router'
-import { Paper } from '@mantine/core';
 
 
 
@@ -40,7 +39,6 @@ export default function Home() {
       </Head>
       <main className={inter.className}>
         <div className={styles.container}>
-
           <SearchBar />
 
           <UsersList />

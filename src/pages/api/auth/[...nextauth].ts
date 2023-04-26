@@ -34,19 +34,19 @@ export const authOptions: NextAuthOptions = {
 
     },
   },
-  cookies: {
-    sessionToken: {
-      name: `${cookiePrefix}next-auth.session-token}`,
-      options: {
-        httpOnly: true,
-        sameSite: false,
-        path: "/",
-        secure: useSecureCookies,
-        domain:
-          process.env.NODE_ENV === "development" ? "localhost" : "next-github-stars.vercel.app/",
-      },
-    },
-  }
+  // cookies: {
+  //   sessionToken: {
+  //     name: `${cookiePrefix}next-auth.session-token}`,
+  //     options: {
+  //       httpOnly: true,
+  //       sameSite: false,
+  //       path: "/",
+  //       secure: useSecureCookies,
+  //       domain:
+  //         process.env.NODE_ENV === "development" ? "localhost" : "next-github-stars.vercel.app/",
+  //     },
+  //   },
+  // }
 }
 
 export default NextAuth(authOptions)
