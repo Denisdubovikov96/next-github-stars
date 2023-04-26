@@ -6,10 +6,11 @@ import RepoCard from './RepoCard'
 import { useGitStars } from '#components/hooks/useGitStars'
 import { useRouter } from 'next/router'
 import { Repo } from '#components/types/common'
+import { Grid, Paper } from '@mantine/core';
 
 const RepoList = () => {
     const { query } = useRouter()
-    const { data: repos, loading: repoLoading } = useQuery<QueryResponse<Repo>>(GET_REPOS_BY_SEARCH, { variables: { search: query.search }, skip: !query.search })
+    const { data: repos } = useQuery<QueryResponse<Repo>>(GET_REPOS_BY_SEARCH, { variables: { search: query.search }, skip: !query.search })
     const { addStar, removeStar, loading } = useGitStars()
 
     const handlerStarClick = React.useCallback(async (id: string, isStared: boolean) => {
@@ -20,25 +21,26 @@ const RepoList = () => {
         }
     }, [repos])
 
-    if (repoLoading) {
-        return <div>LOADING REPOS</div>
-    }
+
 
     return (
-        <>
-            {
-                !!repos?.search.edges.length ?
+        <Paper style={{marginTop: '1rem'}}>
+            <Grid>
+                {
                     repos?.search.edges.map(({ node }) => {
-                        return <RepoCard
-                            key={node.id}
-                            repo={node}
-                            onStarClick={() => handlerStarClick(node.id, node.viewerHasStarred)}
-                            isLoading={loading}
-                        />
-                    }) :
-                    (<div>not found</div>)
-            }
-        </>
+                        return (
+                            <Grid.Col key={node.id} md={6} lg={3}>
+                                <RepoCard
+                                    repo={node}
+                                    onStarClick={() => handlerStarClick(node.id, node.viewerHasStarred)}
+                                    isLoading={loading}
+                                />
+                            </Grid.Col>
+                        )
+                    })
+                }
+            </Grid>
+        </Paper>
     )
 }
 

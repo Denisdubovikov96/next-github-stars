@@ -8,6 +8,9 @@ import RepoList from '#components/components/RepoList'
 import styles from '#components/styles/Home.module.css'
 import React from 'react'
 import { useRouter } from 'next/router'
+import { Paper } from '@mantine/core';
+
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,19 +43,9 @@ export default function Home() {
 
           <SearchBar />
 
-          <section className={styles.section}>
-            <h2>Users</h2>
-            <div className={styles.grid}>
-              <UsersList />
-            </div>
-          </section>
+          <UsersList />
 
-          <section className={styles.section}>
-            <h2>Repositories</h2>
-            <div className={styles.grid}>
-              <RepoList />
-            </div>
-          </section>
+          <RepoList />
 
         </div>
       </main>

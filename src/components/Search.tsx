@@ -1,23 +1,34 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import styles from '#components/styles/Search.module.css'
+import { TextInput, ActionIcon } from '@mantine/core';
+import { useRouter } from 'next/router';
+import React from 'react';
 
-const SearchBar = () => {
-    const { query, push } = useRouter()
+function SearchBar() {
+    const { push } = useRouter()
+
 
     return (
         <form action="" onSubmit={(e) => {
             e.preventDefault()
             push(`/?search=${e.currentTarget.search.value}`, undefined)
         }}>
-            <div className={styles.searchBar}>
-                <input defaultValue={query.search || ""} className={styles.input} type="text" name='search' />
-                <button type='submit' className={styles.btn} >
-                    search
-                </button>
-            </div>
+            <TextInput
+                name='search'
+                radius="xl"
+                size="md"
+                rightSection={
+                    <ActionIcon type='submit'
+                        size={32}
+                        radius="xl"
+                        variant="filled"
+                    >
+                        <span>S</span>
+                    </ActionIcon>
+                }
+                placeholder="Search"
+                rightSectionWidth={42}
+            />
         </form>
-    )
+    );
 }
 
 export default SearchBar

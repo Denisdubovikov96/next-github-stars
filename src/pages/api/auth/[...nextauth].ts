@@ -1,6 +1,11 @@
 import NextAuth, { NextAuthOptions } from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 
+const useSecureCookies = (process.env.NEXTAUTH_URL as string).startsWith(
+  "https://"
+);
+const cookiePrefix = useSecureCookies ? "__Secure-" : "";
+// let type = "";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -11,15 +16,15 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.JWT_SECRET,
   callbacks: {
-    async jwt({ token,user,account,profile,session,trigger }) {
+    async jwt({ token, user, account, profile, session, trigger }) {
       // console.log('jwt',{token,user,account,profile,session,trigger});
-      
+
       user && (token.user = user);
 
 
       return Promise.resolve(token);
     },
-    session: async ({ session, token, user,trigger,newSession, }) => {
+    session: async ({ session, token, user, trigger, newSession, }) => {
       // console.log('session',{token,user,session,trigger,newSession});
       //@ts-ignore
       token.user = token.user;
@@ -29,7 +34,19 @@ export const authOptions: NextAuthOptions = {
 
     },
   },
-
+  cookies: {
+    sessionToken: {
+      name: `${cookiePrefix}next-auth.session-token}`,
+      options: {
+        httpOnly: true,
+        sameSite: false,
+        path: "/",
+        secure: useSecureCookies,
+        domain:
+          process.env.NODE_ENV === "development" ? "localhost" : "next-github-stars.vercel.app/",
+      },
+    },
+  }
 }
 
 export default NextAuth(authOptions)

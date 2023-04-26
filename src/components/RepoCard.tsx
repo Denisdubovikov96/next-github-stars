@@ -1,11 +1,12 @@
 import React from 'react'
 import Image from 'next/image'
-import Card from '#components/UI/Card'
 import Fork from '#components/img/fork.svg'
 import Star from '#components/img/star.svg'
 import StarChecked from '#components/img/star_checked.svg'
-import styles from '#components/styles/Card.module.css'
 import { Repo } from '#components/types/common'
+import { Card, Text, Group, ActionIcon } from '@mantine/core';
+
+import styles from '#components/styles/Card.module.css'
 
 type RepoCardProps = {
     repo: Repo
@@ -13,39 +14,40 @@ type RepoCardProps = {
     isLoading: boolean
 }
 
-const RepoCard: React.FC<RepoCardProps> = ({ repo, onStarClick, isLoading }) => {
+export function RepoCard({ repo, onStarClick, isLoading }: RepoCardProps) {
+
     return (
-        <Card
-            footer={
-                <div className={styles.footerContent}>
-                    <div className={styles.count}>
-                        <Image width={26} height={26} src={Fork} alt='' />
-                        <span>
-                            {repo.forkCount}
-                        </span>
-                    </div>
-                    <div className={styles.count}>
-                        <span>
-                            {repo.stargazerCount}
-                        </span>
-                        <button onClick={onStarClick} disabled={isLoading} className={styles.iconBtn}>
-                            {repo.viewerHasStarred ? (<Image width={26} height={26} src={StarChecked} alt='' />) : (<Image width={26} height={26} src={Star} alt='' />)}
-                        </button>
-                    </div>
-                </div>}
-        >
-            <h5 className={styles.title}>
-                <a href={repo.url} target="_blank" rel="noopener noreferrer">
+        <Card withBorder padding="lg" className={styles.repoCard}>
+            {/* <Card.Section>
+                <Image src={image} alt={''} height={100} width={100} />
+            </Card.Section> */}
+
+            <Group position="apart" mt="xl">
+                <Text fz="sm" fw={700} >
                     {repo.nameWithOwner}
-                </a>
-            </h5>
-            <sub>{new Date(repo.pushedAt).toLocaleString()}</sub>
-            <div className={styles.body}>
+                </Text>
+            </Group>
+            <Text mt="sm" mb="md" c="dimmed" fz="xs">
                 {repo.description}
-            </div>
+            </Text>
+            <Group position='apart' mt='lg' className={styles.repoFooter}>
+                <Group position='apart'>
+                    <ActionIcon onClick={onStarClick} loading={isLoading}>
+                        <Image width={26} height={26} src={repo.viewerHasStarred ? StarChecked : Star} alt='' />
+                    </ActionIcon>
 
+                    <Text size="sm" >
+                        {repo.stargazerCount}
+                    </Text>
+                </Group>
+                <Group position='apart'>
+                    <Text weight={500} size="xs" color="dimmed">
+                        {repo.forkCount}
+                    </Text>
+                    <Image width={26} height={26} src={Fork} alt='' />
+                </Group>
+            </Group>
         </Card>
-    )
+    );
 }
-
 export default RepoCard
